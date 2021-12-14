@@ -38,7 +38,11 @@ exports.readByCpfandCnhNro = (req, res) => {
         else if(!data.length){
             res.status(500).send({message: "Not Found"})
         }
-        else res.status(200).send(data)
+        else if(process.env.ERROR) {
+            res.status(500).send({message: "Service is not available."})
+        } else  {
+            res.status(200).send(data)
+        }
     });
     
 }
