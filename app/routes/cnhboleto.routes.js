@@ -1,6 +1,6 @@
-// module.exports = app => {
-//     const cnhboletoController = require('../controllers/cnhboleto.controller')
+module.exports = app => {
+    const cnhboletoController = require('../controllers/cnhboleto.controller')
 
-//     app.route('/cnhboleto/:cpf')
-//         .get(cnhboletoController.getBoleto)
-// }
+    app.route('/cnhboleto/:cpf')
+        .get(cnhboletoController.getBoleto)
+}

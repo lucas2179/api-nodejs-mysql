@@ -1,6 +1,6 @@
-// module.exports = app => {
-//     const cnhstsrenovController = require('../controllers/cnhstsrenov.controller')
+module.exports = app => {
+    const cnhstsrenovController = require('../controllers/cnhstsrenov.controller')
 
-//     app.route('/cnhstsrenov/:cpf')
-//         .get(cnhstsrenovController.readByCpf)
-// }
+    app.route('/cnhstsrenov/:cpf')
+        .get(cnhstsrenovController.readByCpf)
+}
