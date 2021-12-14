@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: cnhsit-vs
+spec:
+  hosts:
+    - '*'
+  gateways:
+    - cnhsit-gw
+  http:
+    - match:
+        - uri:
+            prefix: /cnhsit
+      route:
+        - destination:
+            host: cnhsit
+            port:
+              number: 8080
