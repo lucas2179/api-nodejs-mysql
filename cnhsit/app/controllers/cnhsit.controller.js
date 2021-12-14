@@ -29,6 +29,15 @@ exports.read = (req, res) => {
 }
 
 exports.readByCpfandCnhNro = (req, res) => {
+    console.log(`executing readByCpfandCnhNro()...`)
+
+    if(process.env.ERROR){
+        console.log(`environment variable ERROR is defined.`)
+        res.status(500).send({message: "Service is not available."})
+    } else {
+        console.log(`environment variable ERROR is NOT defined.`)
+    }
+
     CNH_SIT.readByCpfandCnhNro(req.params.cpf, req.params.cnh_nro, (err, data)=>{
         if(err){
             res.status(500).send({
@@ -37,9 +46,6 @@ exports.readByCpfandCnhNro = (req, res) => {
         }
         else if(!data.length){
             res.status(500).send({message: "Not Found"})
-        }
-        else if(process.env.ERROR) {
-            res.status(500).send({message: "Service is not available."})
         } else  {
             res.status(200).send(data)
         }
