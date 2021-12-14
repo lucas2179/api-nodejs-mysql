@@ -1,4 +1,4 @@
-# Api Nodejs with SQL Server
+# Api Nodejs with MysSQL
 
 Test it using Postman.
 
