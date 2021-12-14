@@ -1,4 +1,4 @@
-# Api Nodejs with MysSQL
+# Api Nodejs with MySQL
 
 Test it using Postman.
 
