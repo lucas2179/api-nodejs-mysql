@@ -29,6 +29,11 @@ exports.read = (req, res) => {
 }
 
 exports.readByCpfandCnhNro = (req, res) => {
+    async function slow() {
+        console.log('Taking a break...');
+        await sleep(3000);    
+      }
+
     console.log(`executing readByCpfandCnhNro()...`)
     CNH_SIT.readByCpfandCnhNro(req.params.cpf, req.params.cnh_nro, (err, data)=>{
         if(err){
@@ -41,8 +46,7 @@ exports.readByCpfandCnhNro = (req, res) => {
         } else  {
             if(process.env.SLOW_PEFORMER){
                 console.log(`environment variable SLOW_PEFORMER is defined.`)
-                console.log('Taking a break...')
-                await sleep(3000)              
+                slow()    
             } else {
                 console.log(`environment variable SLOW_PEFORMER is NOT defined.`)
             }
