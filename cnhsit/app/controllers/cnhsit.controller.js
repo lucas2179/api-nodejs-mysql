@@ -41,7 +41,7 @@ exports.readByCpfandCnhNro = (req, res) => {
             } else {
                 console.log(`environment variable SLOW_PEFORMER is NOT defined.`)
             }
-            console.log(`returning OK.`)
+            console.log(`returning OK.` +"\r\n")
             res.status(200).send(data)
         }
     });
