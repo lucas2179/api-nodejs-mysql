@@ -1,21 +1,5 @@
 const CNH_SIT = require('../models/cnhsit.model')
 
-// exports.read = async(req, res) => {
-//     const cnh_sit = await CNH_SIT.read();
-//     res.status(200).send(cnh_sit)
-// }
-
-// exports.readByCpfandCnhNro = async(req, res) => {
-//     const cnh_sit = await CNH_SIT.readByCpfandCnhNro(req.params.cpf, req.params.cnh_nro)
-
-//     if(cnh_sit.length){
-//         res.status(200).send(cnh_sit)
-//     } else {
-//         res.status(500).send({message: 'Not found.'})
-//     }
-// }
-
-
 exports.read = (req, res) => {
     CNH_SIT.read((err, data)=>{
         if(err){
@@ -29,11 +13,6 @@ exports.read = (req, res) => {
 }
 
 exports.readByCpfandCnhNro = (req, res) => {
-    async function slow() {
-        console.log('Taking a break...');
-        await sleep(3000);    
-      }
-
     console.log(`executing readByCpfandCnhNro()...`)
     CNH_SIT.readByCpfandCnhNro(req.params.cpf, req.params.cnh_nro, (err, data)=>{
         if(err){
@@ -46,7 +25,17 @@ exports.readByCpfandCnhNro = (req, res) => {
         } else  {
             if(process.env.SLOW_PEFORMER){
                 console.log(`environment variable SLOW_PEFORMER is defined.`)
-                slow()    
+                async function init() {
+                    console.log(`taking a break.`);
+                    await sleep(3000);
+                    console.log(`backing from sleep.`);
+                }
+                
+                function sleep(ms) {
+                    return new Promise((resolve) => {
+                    setTimeout(resolve, ms);
+                    });
+                }
             } else {
                 console.log(`environment variable SLOW_PEFORMER is NOT defined.`)
             }
