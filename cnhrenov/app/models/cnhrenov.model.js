@@ -1,8 +1,11 @@
 const { pool } = require('../../config/database')
+const dateTime = require('node-datetime');
 
 exports.create = (date, protocolo, resultado) => {
-    pool.query(`INSERT INTO CNH_REN (cpf, cnh_nro, ren_protocolo)
-                   VALUES ('${date.cpf}', '${date.cnh_nro}', '${protocolo}') `, (err, res) => {
+    var dt = dateTime.create();
+    var dateFormatted = dt.format('Y-m-d');
+    pool.query(`INSERT INTO CNH_REN (cpf, nome, ren_situacao, ren_data, cnh_nro, ren_protocolo, ren_statusservico, ren_status, ren_boletopagamento, ren_desc, ren_valor)
+                   VALUES ('${date.cpf}', 'CNH_MARIA', 'AGENDADO', '${dateFormatted}', '${date.cnh_nro}', '${protocolo}', 'OK', 'EXAME MEDICO', 'https://i.ibb.co/GRJThnb/faturaboleto.png', 'Lorem ipsum', '150')`, (err, res) => {
                        if(err){
                            console.log("error: ", err);
                            resultado(err, null);
@@ -39,23 +42,3 @@ exports.readByCpf = (cpf, resultado) => {
         return;
 })
 }
-
-
-
-
-// exports.readByCpf = async(cpf) =>{
-//     const pool = await poolPromise;
-//     const rs = await pool
-//             .request()
-//             .query(`SELECT ren_status as Status, nome as Nome, ren_situacao as Situacao, ren_data as Data, ren_protocolo as Procotolo
-//                     FROM CNH_REN 
-//                     WHERE CPF = '${cpf}' `);
-    
-//     return rs.recordset;
-// }
-
-
-// // const rs = await pool
-// //         .request()
-// //         .query(`INSERT INTO person (name)
-// //                 VALUES ('${date.name}')`)
