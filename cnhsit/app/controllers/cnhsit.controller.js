@@ -25,10 +25,12 @@ exports.readByCpfandCnhNro = (req, res) => {
         } else  {
             if(process.env.SLOW_PEFORMER){
                 console.log(`environment variable SLOW_PEFORMER is defined.`)
-                async function init() {
+                
+                slow()
+                
+                async function slow() {
                     console.log(`taking a break.`);
                     await sleep(3000);
-                    console.log(`backing from sleep.`);
                 }
                 
                 function sleep(ms) {
@@ -39,6 +41,7 @@ exports.readByCpfandCnhNro = (req, res) => {
             } else {
                 console.log(`environment variable SLOW_PEFORMER is NOT defined.`)
             }
+            console.log(`returning OK.`)
             res.status(200).send(data)
         }
     });
