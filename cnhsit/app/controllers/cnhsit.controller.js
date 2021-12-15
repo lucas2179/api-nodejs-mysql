@@ -1,6 +1,11 @@
 const CNH_SIT = require('../models/cnhsit.model')
 
 exports.read = (req, res) => {
+    if(process.env.ERROR){
+        console.log(`environment variable ERROR is defined.`)
+        console.log(`ERROR 503` +"\r\n")
+        res.status(503).send({message: "ERROR 503"})
+    }
     CNH_SIT.read((err, data)=>{
         if(err){
             res.status(500).send({
