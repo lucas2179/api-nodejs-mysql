@@ -33,3 +33,35 @@ spec:
             host: cdhusts
             port:
               number: 8080
+    - match:
+        - uri:
+            prefix: /cnhrenov
+      route:
+        - destination:
+            host: cnhrenov
+            port:
+              number: 8080
+    - match:
+        - uri:
+            prefix: /cnhstsrenov
+      route:
+        - destination:
+            host: cnhstsrenov
+            port:
+              number: 8080
+    - match:
+        - uri:
+            prefix: /cnhstsproc
+      route:
+        - destination:
+            host: cnhstsproc
+            port:
+              number: 8080
+    - match:
+        - uri:
+            prefix: /cnhboleto
+      route:
+        - destination:
+            host: cnhboleto
+            port:
+              number: 8080
