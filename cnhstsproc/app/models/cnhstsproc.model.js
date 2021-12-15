@@ -35,6 +35,8 @@ exports.read = (resultado) => {
 
 
 exports.readByCpfandCnhNro = (cpf, cnh_nro, resultado) => {
+    console.log("cpf: ", cpf);
+    console.log("conta: ", cnh_nro);
     pool.query(`SELECT nome as Nome, ren_desc as Descricao, ren_situacao as Situacao, ren_data as Data, ren_protocolo as Protocolo FROM CNH_REN WHERE CPF = '${cpf}' AND CNH_NRO = '${cnh_nro}' `, (err, res) => {
         if (err){
             console.log("error: ", err);
