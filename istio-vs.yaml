@@ -12,6 +12,9 @@ spec:
     - match:
         - uri:
             prefix: /cnhsit
+      retries:
+        attempts: 3
+        perTryTimeout: 4s
       route:
         - destination:
             host: cnhsit
