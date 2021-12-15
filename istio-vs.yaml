@@ -1,12 +1,13 @@
-apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
 metadata:
-  name: cnhsit-vs
+  name: bff-vs
+  namespace: bff
 spec:
   hosts:
     - '*'
   gateways:
-    - cnhsit-gw
+    - bff-gw
   http:
     - match:
         - uri:
@@ -14,5 +15,21 @@ spec:
       route:
         - destination:
             host: cnhsit
+            port:
+              number: 8080
+            subset: version-v1
+          weight: 50
+        - destination:
+            host: cnhsit
+            port:
+              number: 8080
+            subset: version-v2
+          weight: 50
+    - match:
+        - uri:
+            prefix: /cdhusts
+      route:
+        - destination:
+            host: cdhusts
             port:
               number: 8080
