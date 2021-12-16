@@ -15,7 +15,7 @@ Basic structure to initialize any project. Following dependencies:
 
 ## Instructions to initialize
 
-Clone this repository and delete the .git folder.
+Clone thIis repository and delete the .git folder.
 
 1. Change the `database.js` file with your informations.
 2. Start using `npm i` to install the dependencies.
