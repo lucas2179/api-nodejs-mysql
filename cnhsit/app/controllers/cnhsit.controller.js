@@ -3,8 +3,9 @@ const CNH_SIT = require('../models/cnhsit.model')
 exports.read = (req, res) => {
     if(process.env.ERROR){
         console.log(`environment variable ERROR is defined.`)
-        console.log(`ERROR 504` +"\r\n")
-        res.status(504).send({message: "ERROR 504"})
+        console.log("Sending 504 error to client");
+        res.writeHead(504, {'Content-Type': 'text/plain'});
+        res.end();
     }
     CNH_SIT.read((err, data)=>{
         if(err){
