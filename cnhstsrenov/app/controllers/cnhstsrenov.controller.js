@@ -22,9 +22,7 @@ exports.update = (req, res) => {
         })
     }
     
-    var protocolo = Math.floor(Math.random() * 90000) + 10000;
-    
-    CNH_STS_RENOV.update(req.body, cpf, protocolo, (err, data) => {
+    CNH_STS_RENOV.update(req.body, req.params.cpf, req.params.protocolo, (err, data) => {
         if(err){
             res.status(500).send({message: err.message})
         }
