@@ -14,3 +14,23 @@ exports.readByCpf = (req, res) => {
     });
     
 }
+
+exports.update = (req, res) => {
+    if(!req.body){
+        res.status(400).send({
+            message: "content empty"
+        })
+    }
+    
+    var protocolo = Math.floor(Math.random() * 90000) + 10000;
+    
+    CNH_STS_RENOV.update(req.body, cpf, protocolo, (err, data) => {
+        if(err){
+            res.status(500).send({message: err.message})
+        }
+        else{
+            res.status(200).send(data)
+        }
+    })
+ 
+}

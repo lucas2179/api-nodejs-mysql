@@ -23,3 +23,18 @@ exports.readByCpf = (cpf, resultado) => {
         return;
 })
 }
+
+exports.update = (date, cpf, protocolo, resultado) => {
+    
+    pool.query(`INSERT CNH_REN SET ren_status ='${date.ren_status}' WHERE cpf = '${cpf}' AND ren_protocolo = '${protocolo}'`, (err, res) => {
+                       if(err){
+                           console.log("error: ", err);
+                           resultado(err, null);
+                           return;
+                       }
+                       else{
+                           console.log("created: ", res)
+                           resultado(null, {message: 'Ok!', Protocolo: protocolo})
+                       }
+                   })
+}
