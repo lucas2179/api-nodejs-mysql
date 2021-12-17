@@ -34,7 +34,7 @@ exports.update = (date, cpf, protocolo, resultado) => {
                        }
                        else{
                            console.log("created: ", res)
-                           resultado(null, {message: 'Ok!', Protocolo: protocolo})
+                           resultado(null, {message: 'Ok!', status: date.ren_status})
                        }
                    })
 }
