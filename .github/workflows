@@ -3,7 +3,12 @@
 # startegy and push the image to ghcr.io (Image registry)
 
 name: S2I build image
-on: [ push, workflow_dispatch, pull_request ]
+on: 
+  push:
+    branches:
+      - new
+    paths:
+      - - "cnhsit/**"
 env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   REGISTRY_USER: ${{ github.actor }}
