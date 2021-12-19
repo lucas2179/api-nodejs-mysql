@@ -15,6 +15,9 @@ env:
   REGISTRY_PASSWORD: ${{ secrets.token }}
   APP_NAME: test
   IMAGE_TAGS: latest ${{ github.sha }}
+  OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
+  OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+  OPENSHIFT_NAMESPACE: "testelucas"
 
 jobs:
   build-and-push:
@@ -43,3 +46,19 @@ jobs:
           registry: ${{ env.IMAGE_REGISTRY }}
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
+  deploy:
+    needs: build-and-push
+    name: Deploy to Openshift
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in to OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
+          openshift_token: ${{ env.OPENSHIFT_TOKEN }}
+          insecure_skip_tls_verify: true
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+      - name: Deploy to openshift
+        run: oc apply -f cnhsit.yaml
+    
+
