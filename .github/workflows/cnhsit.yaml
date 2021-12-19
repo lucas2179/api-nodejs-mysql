@@ -8,7 +8,7 @@ on:
     branches:
       - new
     paths:
-      - - "cnhsit/**"
+      - "cnhsit/**"
 env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   REGISTRY_USER: ${{ github.actor }}
