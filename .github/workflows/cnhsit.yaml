@@ -51,6 +51,10 @@ jobs:
     name: Deploy to Openshift
     runs-on: ubuntu-latest
     steps:
+      - name: OpenShift Client Installer
+        uses: redhat-actions/oc-installer@v1
+        with:
+          oc_version: latest
       - name: Log in to OpenShift
         uses: redhat-actions/oc-login@v1
         with:
