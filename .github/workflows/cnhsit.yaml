@@ -67,7 +67,20 @@ jobs:
           openshift_token: ${{ env.OPENSHIFT_TOKEN }}
           insecure_skip_tls_verify: true
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+          
+          
+      - name: Replace Environment Variables
+        uses: danielr1996/envsubst-action@1.0.0
+        env:
+          IMAGE: ${{ IMAGE_REGISTRY }}/${{ APP_NAME }}:${{ github.sha }}
+          SERVER_NAME: ${{ secrets.SERVER_NAME }}
+          DATABASE_USER: ${{ secrets.DATABASE_USER }}
+          DATABASE_PWS: ${{ secrets.DATABASE_PWS }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+        with:
+          input: cnhsit.yml
+          output: cnhsitdeploy.yml
       - name: Deploy to openshift
-        run: oc apply -f cnhsit.yaml
+        run: oc apply -f cnhsitdeploy.yaml
     
 
