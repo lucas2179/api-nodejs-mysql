@@ -18,6 +18,11 @@ env:
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: "testelucas"
+  
+  DATABASE_PWS: ${{ secrets.DATABASE_PWS }}
+  DATABASE_USER: ${{ secrets.DATABASE_USER }}
+  SERVER_NAME: ${{ secrets.SERVER_NAME }}
+  DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
 
 jobs:
   build-and-push:
