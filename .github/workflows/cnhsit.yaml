@@ -51,11 +51,21 @@ jobs:
           registry: ${{ env.IMAGE_REGISTRY }}
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: cnhsit
+          path: ./
   deploy:
     needs: build-and-push
     name: Deploy to Openshift
     runs-on: ubuntu-latest
     steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: cnhsit
+          path: './'
       - name: OpenShift Client Installer
         uses: redhat-actions/oc-installer@v1
         with:
