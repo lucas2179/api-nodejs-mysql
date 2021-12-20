@@ -55,7 +55,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: cnhsit
-          path: ./
+          path: ./cnhsit/cnhsit.yaml
   deploy:
     needs: build-and-push
     name: Deploy to Openshift
@@ -65,7 +65,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: cnhsit
-          path: './'
+          path: './cnhsit'
       - name: OpenShift Client Installer
         uses: redhat-actions/oc-installer@v1
         with:
@@ -88,8 +88,8 @@ jobs:
           DATABASE_PWS: ${{ secrets.DATABASE_PWS }}
           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
         with:
-          input: cnhsit.yml
-          output: cnhsitdeploy.yml
+          input: cnhsit/cnhsit.yaml
+          output: cnhsitdeploy.yaml
       - name: Deploy to openshift
         run: oc apply -f cnhsitdeploy.yaml
     
