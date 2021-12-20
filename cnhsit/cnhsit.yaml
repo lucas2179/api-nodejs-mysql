@@ -1,0 +1,74 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: cnhsitv4
+    app.kubernetes.io/component: cnhsitv4
+    app.kubernetes.io/instance: cnhsitv4
+    app.kubernetes.io/name: cnhsitv4
+    app.kubernetes.io/part-of: cnhsit-v4
+    app.openshift.io/runtime: nodejs
+    app.openshift.io/runtime-version: 14-ubi7
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cnhsitv4
+  template:
+    metadata:
+      labels:
+        app: cnhsitv4
+        deploymentconfig: cnhsitv4
+      annotations:
+        sidecar.istio.io/inject: 'true'
+    spec:
+      containers:
+        - name: cnhsitv4
+          image: "$IMAGE"
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: DATABASE_USER
+              value: "$DATABASE_USER"
+            - name: DATABASE_PWS
+              value: "$DATABASE_PWS"
+            - name: SERVER_NAME
+              value: "$SERVER_NAME"
+            - name: DATABASE_NAME
+              value: "$DATABASE_NAME"
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+      imagePullSecrets: []
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cnhsitv4
+  namespace: bff
+  labels:
+    app: cnhsitv4
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: cnhsitv4
+  clusterIP: 172.30.26.254
+  clusterIPs:
+    - 172.30.26.254
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
