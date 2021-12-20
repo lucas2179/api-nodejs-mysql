@@ -72,7 +72,7 @@ jobs:
       - name: Replace Environment Variables
         uses: danielr1996/envsubst-action@1.0.0
         env:
-          IMAGE: ${{ IMAGE_REGISTRY }}/${{ APP_NAME }}:${{ github.sha }}
+          IMAGE: ${{ env.IMAGE_REGISTRY }}/${{ env.APP_NAME }}:${{ github.sha }}
           SERVER_NAME: ${{ secrets.SERVER_NAME }}
           DATABASE_USER: ${{ secrets.DATABASE_USER }}
           DATABASE_PWS: ${{ secrets.DATABASE_PWS }}
