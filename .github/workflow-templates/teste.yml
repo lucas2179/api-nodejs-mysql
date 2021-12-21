@@ -7,7 +7,11 @@ on:
   workflow_call:
     inputs:
       app_name:
-        type: string
+        required: true
+      image_registry:
+        required: true
+      image_tags:
+        required: true
     secrets:
       registry_password:
         required: true
@@ -25,12 +29,11 @@ on:
         required: true
       server_name:
         required: true
+      registry_user:
+        required: true
         
 
-env:
-  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-  REGISTRY_USER: ${{ github.actor }}
-  IMAGE_TAGS: latest ${{ github.sha }}
+
   
 
 jobs:
@@ -48,7 +51,7 @@ jobs:
         uses: redhat-actions/s2i-build@v2
         with:
           image: ${{ inputs.app_name }}
-          tags: ${{ env.IMAGE_TAGS }}
+          tags: ${{ inputs.image_tags }}
           builder_image: 'registry.access.redhat.com/ubi7/nodejs-14'
           path_context: ./${{inputs.app_name}}
 
@@ -58,9 +61,9 @@ jobs:
         with:
           image: ${{ steps.build_image.outputs.image }}
           tags: ${{ steps.build_image.outputs.tags }}
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ inputs.registry_password }}
+          registry: ${{ inputs.image_registry }}
+          username: ${{ secrets.registry_user }}
+          password: ${{ secrets.registry_password }}
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
@@ -92,7 +95,7 @@ jobs:
       - name: Replace Environment Variables
         uses: danielr1996/envsubst-action@1.0.0
         env:
-          IMAGE: ${{ env.IMAGE_REGISTRY }}/${{ inputs.app_name }}:${{ github.sha }}
+          IMAGE: ${{ inputs.image_registry }}/${{ inputs.app_name }}:${{ github.sha }}
           SERVER_NAME: ${{ secrets.server_name }}
           DATABASE_USER: ${{ secrets.database_user }}
           DATABASE_PWS: ${{ secrets.database_pws }}
