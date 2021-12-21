@@ -25,17 +25,18 @@ env:
   DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
 
 jobs:
-  uses: lucas2179/api-nodejs-mysql/.github/workflow-templates/teste.yaml@new
-  with:
-    app_name: ${{env.APP_NAME}}
-  secrets:
-    registry_password: $REGISTRY_PASSWORD
-    openshift_server: ${{env.OPENSHIFT_SERVER}}
-    openshift_token: ${{env.OPENSHIFT_TOKEN}}
-    openshift_namespace: ${{env.OPENSHIFT_NAMESPACE}}
-    database_pws: ${{env.DATABASE_PWS}}
-    database_name: ${{env.DATABASE_NAME}}
-    database_user: ${{env.DATABASE_USER}}
-    server_name: ${{env.SERVER_NAME}}
+  deploy:
+    uses: ./.github/workflows/teste.yml@new
+    with:
+      app_name: ${{env.APP_NAME}}
+    secrets:
+      registry_password: $REGISTRY_PASSWORD
+      openshift_server: ${{env.OPENSHIFT_SERVER}}
+      openshift_token: ${{env.OPENSHIFT_TOKEN}}
+      openshift_namespace: ${{env.OPENSHIFT_NAMESPACE}}
+      database_pws: ${{env.DATABASE_PWS}}
+      database_name: ${{env.DATABASE_NAME}}
+      database_user: ${{env.DATABASE_USER}}
+      server_name: ${{env.SERVER_NAME}}
     
 
