@@ -26,7 +26,7 @@ env:
 
 jobs:
   deploy:
-    uses: ./.github/workflows/teste.yml@new
+    uses: lucas2179/api-nodejs-mysql/.github/workflows/teste.yml@new
     with:
       app_name: ${{env.APP_NAME}}
     secrets:
