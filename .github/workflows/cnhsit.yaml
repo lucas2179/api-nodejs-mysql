@@ -41,6 +41,7 @@ jobs:
           image: ${{ env.APP_NAME }}
           tags: ${{ env.IMAGE_TAGS }}
           builder_image: 'registry.access.redhat.com/ubi7/nodejs-14'
+          path_context: ./cnhsit
 
       # Push image to the GitHub container registry
       - name: Push To GitHub container registry
