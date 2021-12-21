@@ -1,0 +1,41 @@
+# This example workflow will build container image
+# of the application using source to image build
+# startegy and push the image to ghcr.io (Image registry)
+
+name: S2I build image
+on: 
+  push:
+    branches:
+      - new
+    paths:
+      - "cnhsit/**"
+env:
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  REGISTRY_USER: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ secrets.token }}
+  APP_NAME: test
+  IMAGE_TAGS: latest ${{ github.sha }}
+  OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
+  OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+  OPENSHIFT_NAMESPACE: "testelucas"
+  
+  DATABASE_PWS: ${{ secrets.DATABASE_PWS }}
+  DATABASE_USER: ${{ secrets.DATABASE_USER }}
+  SERVER_NAME: ${{ secrets.SERVER_NAME }}
+  DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+
+jobs:
+  uses: lucas2179/api-nodejs-mysql/.github/workflow-templates/teste.yaml@new
+  with:
+    app_name: ${{env.APP_NAME}}
+  secrets:
+    registry_password: $REGISTRY_PASSWORD
+    openshift_server: ${{env.OPENSHIFT_SERVER}}
+    openshift_token: ${{env.OPENSHIFT_TOKEN}}
+    openshift_namespace: ${{env.OPENSHIFT_NAMESPACE}}
+    database_pws: ${{env.DATABASE_PWS}}
+    database_name: ${{env.DATABASE_NAME}}
+    database_user: ${{env.DATABASE_USER}}
+    server_name: ${{env.SERVER_NAME}}
+    
+
