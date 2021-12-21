@@ -1,0 +1,109 @@
+# This example workflow will build container image
+# of the application using source to image build
+# startegy and push the image to ghcr.io (Image registry)
+
+name: s2i build
+on: 
+  workflow_call:
+    inputs:
+      app_name:
+        required: true
+      image_registry:
+        required: true
+      image_tags:
+        required: true
+    secrets:
+      registry_password:
+        required: true
+      openshift_server: 
+        required: true
+      openshift_token:
+        required: true
+      openshift_namespace:
+        required: true
+      database_pws:
+        required: true
+      database_name:
+        required: true
+      database_user:
+        required: true
+      server_name:
+        required: true
+      registry_user:
+        required: true
+        
+
+
+  
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-18.04
+    name: Build and push to ghcr.io
+    steps:
+      # Checkout spring petclinic repository
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Setup S2I and build container image
+      - name: Setup and Build
+        id: build_image
+        uses: redhat-actions/s2i-build@v2
+        with:
+          image: ${{ inputs.app_name }}
+          tags: ${{ inputs.image_tags }}
+          builder_image: 'registry.access.redhat.com/ubi7/nodejs-14'
+          path_context: ./${{inputs.app_name}}
+
+      # Push image to the GitHub container registry
+      - name: Push To GitHub container registry
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build_image.outputs.image }}
+          tags: ${{ steps.build_image.outputs.tags }}
+          registry: ${{ inputs.image_registry }}
+          username: ${{ secrets.registry_user }}
+          password: ${{ secrets.registry_password }}
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ inputs.app_name}}
+          path: ./${{ inputs.app_name }}/ ${{ inputs.app_name }}.yaml
+  deploy:
+    needs: build-and-push
+    name: Deploy to Openshift
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{inputs.app_name}}
+          path: ./${{ inputs.app_name }}
+      - name: OpenShift Client Installer
+        uses: redhat-actions/oc-installer@v1
+        with:
+          oc_version: latest
+      - name: Log in to OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ secrets.openshift_server }}
+          openshift_token: ${{ secrets.openshift_token }}
+          insecure_skip_tls_verify: true
+          namespace: ${{ secrets.openshift_namespace }}
+          
+          
+      - name: Replace Environment Variables
+        uses: danielr1996/envsubst-action@1.0.0
+        env:
+          IMAGE: ${{ inputs.image_registry }}/${{ inputs.app_name }}:${{ github.sha }}
+          SERVER_NAME: ${{ secrets.server_name }}
+          DATABASE_USER: ${{ secrets.database_user }}
+          DATABASE_PWS: ${{ secrets.database_pws }}
+          DATABASE_NAME: ${{ secrets.database_name }}
+        with:
+          input: ${{inputs.app_name}}/${{inputs.app_name}}.yaml
+          output: ${{inputs.app_name}}deploy.yaml
+      - name: Deploy to openshift
+        run: oc apply -f ${{inputs.app_name}}deploy.yaml
+    
+
