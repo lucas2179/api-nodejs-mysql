@@ -1,3 +1,19 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: cnhsitv4
+  labels:
+    app: cnhsitv4
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: cnhsitv4
+  type: ClusterIP
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -50,27 +66,4 @@ spec:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: cnhsitv4
-  namespace: bff
-  labels:
-    app: cnhsitv4
-spec:
-  ports:
-    - name: 8080-tcp
-      protocol: TCP
-      port: 8080
-      targetPort: 8080
-  selector:
-    app: cnhsitv4
-  clusterIP: 172.30.26.254
-  clusterIPs:
-    - 172.30.26.254
-  type: ClusterIP
-  sessionAffinity: None
-  ipFamilies:
-    - IPv4
-  ipFamilyPolicy: SingleStack
+
