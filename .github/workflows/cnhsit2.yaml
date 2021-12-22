@@ -28,15 +28,17 @@ jobs:
   deploy:
     uses: lucas2179/api-nodejs-mysql/.github/workflows/teste.yml@new
     with:
-      app_name: ${{env.APP_NAME}}
+      app_name: test
+      image_registry: ghcr.io/${{ github.repository_owner }}
+      image_tags: latest ${{ github.sha }}
     secrets:
-      registry_password: $REGISTRY_PASSWORD
-      openshift_server: ${{env.OPENSHIFT_SERVER}}
-      openshift_token: ${{env.OPENSHIFT_TOKEN}}
-      openshift_namespace: ${{env.OPENSHIFT_NAMESPACE}}
-      database_pws: ${{env.DATABASE_PWS}}
-      database_name: ${{env.DATABASE_NAME}}
-      database_user: ${{env.DATABASE_USER}}
-      server_name: ${{env.SERVER_NAME}}
-    
+      registry_password: ${{ secrets.token }}
+      openshift_server: ${{ secrets.OPENSHIFT_SERVER }}
+      openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+      openshift_namespace: "testelucas"
+      database_pws: ${{ secrets.DATABASE_PWS }}
+      database_name: ${{secrets.DATABASE_NAME}}
+      database_user: ${{secrets.DATABASE_USER}}
+      server_name: ${{secrets.SERVER_NAME}}
+      registry_user: ${{ github.actor }}
 
