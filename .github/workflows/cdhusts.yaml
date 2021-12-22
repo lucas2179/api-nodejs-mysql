@@ -26,6 +26,7 @@ env:
 
 jobs:
   deploy:
+    name: teste
     uses: lucas2179/api-nodejs-mysql/.github/workflows/teste.yml@new
     with:
       app_name: cdhusts
