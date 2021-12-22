@@ -8,10 +8,13 @@ on:
     inputs:
       app_name:
         required: true
+        type: string
       image_registry:
         required: true
+        type: string
       image_tags:
         required: true
+        type: string
     secrets:
       registry_password:
         required: true
