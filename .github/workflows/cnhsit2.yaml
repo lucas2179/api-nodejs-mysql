@@ -28,7 +28,7 @@ jobs:
   deploy:
     uses: lucas2179/api-nodejs-mysql/.github/workflows/teste.yml@new
     with:
-      app_name: test
+      app_name: cnhsit
       image_registry: ghcr.io/${{ github.repository_owner }}
       image_tags: latest ${{ github.sha }}
     secrets:
