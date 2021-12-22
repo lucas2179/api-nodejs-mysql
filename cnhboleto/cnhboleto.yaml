@@ -1,0 +1,69 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: cnhboleto
+  labels:
+    app: cnhboleto
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: cnhboleto
+  type: ClusterIP
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: cnhboleto
+  labels:
+    app: cnhboleto
+    app.kubernetes.io/component: cnhboleto
+    app.kubernetes.io/instance: cnhboleto
+    app.kubernetes.io/name: cnhboleto
+    app.kubernetes.io/part-of: cnhboleto
+    app.openshift.io/runtime: nodejs
+    app.openshift.io/runtime-version: 14-ubi7
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cnhboleto
+  template:
+    metadata:
+      labels:
+        app: cnhboleto
+        deploymentconfig: cnhboleto
+      annotations:
+        sidecar.istio.io/inject: 'true'
+    spec:
+      containers:
+        - name: cnhboleto
+          image: "$IMAGE"
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: DATABASE_USER
+              value: "$DATABASE_USER"
+            - name: DATABASE_PWS
+              value: "$DATABASE_PWS"
+            - name: SERVER_NAME
+              value: "$SERVER_NAME"
+            - name: DATABASE_NAME
+              value: "$DATABASE_NAME"
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+      imagePullSecrets:
+        - name: acr-secret
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+
