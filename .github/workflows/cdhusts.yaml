@@ -2,7 +2,7 @@
 # of the application using source to image build
 # startegy and push the image to ghcr.io (Image registry)
 
-name: S2I build image
+name: chusts
 on: 
   push:
     branches:
