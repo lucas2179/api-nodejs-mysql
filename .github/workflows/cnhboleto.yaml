@@ -1,0 +1,30 @@
+# This example workflow will build container image
+# of the application using source to image build
+# startegy and push the image to ghcr.io (Image registry)
+
+name: cnhboleto
+on: 
+  push:
+    branches:
+      - new
+    paths:
+      - "cnhboleto/**"
+
+jobs:
+  deploy:
+    uses: lucas2179/api-nodejs-mysql/.github/workflows/teste.yml@new
+    with:
+      app_name: cnhboleto
+      image_registry: ghcr.io/${{ github.repository_owner }}
+      image_tags: latest ${{ github.sha }}
+    secrets:
+      registry_password: ${{ secrets.token }}
+      openshift_server: ${{ secrets.OPENSHIFT_SERVER }}
+      openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+      openshift_namespace: "testelucas"
+      database_pws: ${{ secrets.DATABASE_PWS }}
+      database_name: ${{secrets.DATABASE_NAME}}
+      database_user: ${{secrets.DATABASE_USER}}
+      server_name: ${{secrets.SERVER_NAME}}
+      registry_user: ${{ github.actor }}
+
