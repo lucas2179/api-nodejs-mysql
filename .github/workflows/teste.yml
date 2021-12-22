@@ -71,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: ${{ inputs.app_name}}
-          path: ./${{ inputs.app_name }}/ ${{ inputs.app_name }}.yaml
+          path: ./${{ inputs.app_name }}/${{ inputs.app_name }}.yaml
   deploy:
     needs: build-and-push
     name: Deploy to Openshift
